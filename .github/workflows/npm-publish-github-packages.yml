@@ -13,8 +13,13 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 20
-      - run: npm install
-      - run: npm ci
+      # Check if package-lock.json exists
+      - run: |
+          if [ ! -f package-lock.json ]; then
+            npm install
+          else
+            npm ci
+          fi
 
   publish-gpr:
     needs: build
