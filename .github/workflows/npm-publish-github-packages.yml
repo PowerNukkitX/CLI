@@ -15,10 +15,10 @@ jobs:
           node-version: 20
       # Check if package-lock.json exists
       - run: |
-          if [ ! -f package-lock.json ]; then
-            npm install
-          else
+          if [ -f package-lock.json ]; then
             npm ci
+          else
+            npm install
           fi
 
   publish-gpr:
@@ -33,7 +33,12 @@ jobs:
         with:
           node-version: 20
           registry-url: https://npm.pkg.github.com/
-      - run: npm ci
+      - run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
@@ -47,7 +52,12 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
+      - run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
