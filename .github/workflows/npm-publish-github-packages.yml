@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write # allow GITHUB_TOKEN to publish packages
+      packages: write # ensure GITHUB_TOKEN has write access
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
@@ -17,8 +17,6 @@ jobs:
           node-version: "20"
       - run: npm ci
       - run: npm test
-      - run: npm pkg fix
-      - uses: JS-DevTools/npm-publish@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          registry: "https://npm.pkg.github.com"
+      - run: npm publish --registry=https://npm.pkg.github.com
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
