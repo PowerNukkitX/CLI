@@ -1,14 +1,14 @@
 {
   "name": "pnx-cli",
   "version": "0.1.7",
-  "description": "",
+  "description": "New CLI PowerNukkitX",
   "main": "pnx-cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "type": "module",
   "keywords": [],
-  "author": "",
+  "author": "Azalee",
   "bin": "./pnx-cli.js",
   "license": "ISC",
   "dependencies": {
