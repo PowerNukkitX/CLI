@@ -1,3 +1,5 @@
+name: Publish PKG
+
 on:
   push:
     branches: master
@@ -14,7 +16,7 @@ jobs:
         with:
           node-version: "20"
       - run: npm ci
-      - run: npm test --passWithNoTests
+      - run: npm test
       - uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
