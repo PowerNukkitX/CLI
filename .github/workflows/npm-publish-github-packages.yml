@@ -42,7 +42,7 @@ jobs:
       - run: npm pkg fix
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   publish-npm:
     needs: build
