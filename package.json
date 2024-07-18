@@ -4,7 +4,7 @@
   "description": "New CLI PowerNukkitX",
   "main": "pnx-cli.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "type": "module",
   "keywords": [],
