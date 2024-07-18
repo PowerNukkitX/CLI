@@ -17,6 +17,7 @@ jobs:
           node-version: "20"
       - run: npm ci
       - run: npm pkg fix
+      - run: npm adduser
       - run: npm publish --registry=https://npm.pkg.github.com
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
