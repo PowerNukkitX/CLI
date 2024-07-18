@@ -20,6 +20,9 @@
     "gradient-string": "^2.0.2",
     "i18n": "^0.15.1"
   },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
   "engines": {
     "node": "20.x"
   }
