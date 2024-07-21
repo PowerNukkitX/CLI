@@ -1,18 +1,41 @@
 {
   "name": "pnx-cli",
-  "version": "0.1.8",
+  "version": "0.1.9",
+  "homepage": "https://v2.powernukkitx.com",
+
   "description": "New CLI PowerNukkitX",
   "main": "pnx-cli.js",
   "scripts": {
     "test": "jest --passWithNoTests"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PowerNukkitX/CLI.git"
+  },
   "type": "module",
-  "keywords": [],
-  "author": "Azalee",
+  "keywords": [
+    "pnx",
+    "powernukkitx",
+    "cli",
+    "powernukkit",
+    "bedrock",
+    "bedrockedition",
+    "bedrock-server",
+    "minecraft",
+    "minecraftbedrock",
+    "mc-server",
+    "mcbe",
+    "mcpe",
+    "minecraft-server-software"
+  ],
+  "author": {
+    "name": "Azalee",
+    "url": "https://github.com/AzaleeX"
+  },
   "bin": {
     "pnx-cli": "pnx-cli.js"
   },
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "@clack/prompts": "^0.7.0",
     "axios": "^1.7.2",
