@@ -12,7 +12,7 @@ import { spawn } from 'child_process';
 import readline from 'readline';
 
 let fileinstall = process.cwd();
-let serverAlreadyInstalled = false; // Flag to track if server is already installed
+let serverAlreadyInstalled = false;
 
 // Fetch the latest release information from GitHub
 const getRelease = async () => {
@@ -39,37 +39,6 @@ const displayBanner = () => {
             }
         });
     });
-};
-
-// Prompt user for installation path
-const askForInstallationPath = async (defaultPath) => {
-    let isValidPath = false;
-    while (!isValidPath) {
-        const newPath = await p.text({
-            message: "Enter the path of the PowerNukkitX installation folder:",
-            initialValue: defaultPath,
-            validate: (value) => {
-                if (!value) return "Undefined path.";
-                if (!existsSync(value)) return "Invalid path.";
-                if (existsSync(`${value}/libs`) &&
-                    existsSync(`${value}/powernukkitx.jar`) &&
-                    ((os.platform() !== 'win32' && existsSync(`${value}/start.sh`)) ||
-                        (os.platform() === 'win32' && existsSync(`${value}/start.bat`)))) {
-                    p.outro("The path is correct. The required files are present. The installation will continue.");
-                    executeStartScript(value);
-                    serverAlreadyInstalled = true;
-                } else {
-                    serverAlreadyInstalled = false;
-                }
-                isValidPath = true;
-                return;
-            },
-        });
-        if (isValidPath) {
-            fileinstall = newPath;
-        }
-    }
-    return fileinstall;
 };
 
 // Download a file from the given URL and save it to the specified path
@@ -250,7 +219,7 @@ const askForConfigServer = async () => {
                 const whitelistFileContent = players.join('\n') + '\n';
                 try {
                     await writeFile(`${fileinstall}/white-list.txt`, whitelistFileContent);
-                }catch (error) {
+                } catch (error) {
                     console.error('Error occurred while creating white-list.txt file:', error);
                 }
             }
@@ -395,11 +364,14 @@ network-encryption=on
         } catch (error) {
             console.error('Error occurred while creating server.properties file:', error);
         }
+    }else{
+        p.outro("The server will launch itself, but you can restart it with the CLI. Visit docs.powernukkitx.com for more information.");
+        await executeStartScript(fileinstall);
     }
 };
 
 // Execute the start script for the server
-const executeStartScript = (installPath) => {
+const executeStartScript = async (installPath) => {
     const startScript = os.platform() === 'win32' ? `${installPath}/start.bat` : `${installPath}/start.sh`;
 
     const childProcess = spawn(startScript, [], {
@@ -428,29 +400,15 @@ const checkRequiredFiles = (installPath) => {
 
 // Main function to coordinate the installation and configuration process
 async function main() {
-    if (checkRequiredFiles(fileinstall)) {
-        console.log('Required files are already present. Skipping download and extraction.');
-        executeStartScript(fileinstall);
-        serverAlreadyInstalled = true;
-    }
     await displayBanner();
-    await p.intro("Welcome to PowerNukkitX's automatic installer. This program will ask you questions and, depending on the answers, you'll get an installation that's just right for you.");
-
-    const confirms = await p.confirm({
-        message: `Is the PowerNukkitX installation done in the file where you launched the executable correct? (${fileinstall})`,
-        active: "Yes",
-        inactive: "No, I want to change it.",
-        initialValue: true
-    });
-
-    if (!confirms) {
-        await askForInstallationPath(fileinstall);
-    }
-
     if (checkRequiredFiles(fileinstall)) {
         console.log('Required files are already present. Skipping download and extraction.');
-        executeStartScript(fileinstall);
+        await executeStartScript(fileinstall);
         serverAlreadyInstalled = true;
+    }
+
+    if(!serverAlreadyInstalled){
+        await p.intro("Welcome to PowerNukkitX's automatic installer. This program will ask you questions and, depending on the answers, you'll get an installation that's just right for you.");
     }
 
     const releases = await getRelease();
